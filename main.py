@@ -287,11 +287,13 @@ class WorkerPool:
                     pass
 
             ws_ready = asyncio.Event()
+            worker_info = {"alive": True}
 
             def on_ws(ws):
                 if "premws" not in ws.url:
                     return
                 ws.on("framereceived", on_frame)
+                ws.on("close", lambda: worker_info.__setitem__("alive", False))
                 ws_ready.set()
 
             page.on("websocket", on_ws)
@@ -310,6 +312,8 @@ class WorkerPool:
                 "page": page,
                 "browser_idx": browser_idx,
                 "name": name,
+                "detail_hash": detail_hash,
+                "info": worker_info,
             }
             return True
 
@@ -369,6 +373,39 @@ class WorkerPool:
             log(f"[Pool] {len(new)} new events detected")
             await self.spawn_all(new)
 
+    async def respawn_dead(self):
+        """Detect dead workers (WS closed / page crashed) and respawn them."""
+        dead = []
+        for fi, w in list(self._workers.items()):
+            try:
+                page_dead = w["page"].is_closed()
+            except Exception:
+                page_dead = True
+            ws_dead = not w["info"]["alive"]
+            if page_dead or ws_dead:
+                dead.append(fi)
+
+        if not dead:
+            return
+
+        log(f"[Pool] {len(dead)} dead workers, respawning...")
+        for fi in dead:
+            w = self._workers.pop(fi)
+            name, detail_hash = w["name"], w["detail_hash"]
+            # Clean up old tab
+            try:
+                await w["page"].close()
+            except Exception:
+                pass
+            async with self._lock:
+                idx = w["browser_idx"]
+                if idx < len(self._browsers):
+                    self._browsers[idx]["tab_count"] -= 1
+            # Respawn
+            result = await self._spawn_one(fi, name, detail_hash)
+            status = "respawned" if result else "respawn FAILED"
+            log(f"[Pool] {name[:30]} — {status}")
+
     async def stop(self):
         """Shut down all workers and browsers."""
         for w in self._workers.values():
@@ -407,9 +444,10 @@ class Monitor:
             emit({"type": "snapshot", "data": self.state.to_json()})
 
     async def _event_watcher(self):
-        """Watch for new/removed events and manage workers."""
+        """Watch for new/removed events, manage workers, respawn dead ones."""
         while True:
-            await asyncio.sleep(30)
+            await asyncio.sleep(15)
+            await self.pool.respawn_dead()
             events = get_navigable_events(self.state)
             await self.pool.sync_events(events)
 
