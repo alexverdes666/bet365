@@ -37,6 +37,11 @@ class Entity:
     parent: Entity | None = field(default=None, repr=False)
 
 
+def _is_ov_mirror(it: str) -> bool:
+    """True for OV-mirror entities/topics (NOT OVM — that has unique market data)."""
+    return it.startswith("OV") and not it.startswith("OVM")
+
+
 class StateManager:
     def __init__(self, on_change: Callable[[ChangeEvent], None] | None = None):
         self.entities: dict[str, Entity] = {}  # IT -> Entity
@@ -102,8 +107,8 @@ class StateManager:
             if it:
                 self.entities[it] = entity
 
-            # Emit new event for non-OV topics only (avoid duplicates)
-            if et == "EV" and not it.startswith("OV"):
+            # Emit new event for non-OV-mirror topics (OVM has unique data)
+            if et == "EV" and not _is_ov_mirror(it):
                 changes.append(self._make_change("new_event", entity, {}))
 
         self.topics[topic] = roots
@@ -115,8 +120,8 @@ class StateManager:
         if not entity:
             return []
 
-        # Skip emitting change events for OV-mirrored entities (avoid duplicates)
-        emit = not topic.startswith("OV")
+        # Skip OV-mirror change events (but keep OVM — unique market data)
+        emit = not _is_ov_mirror(topic)
 
         changes = []
         # Merge fields from all rows (usually just one for U| operations)
@@ -292,9 +297,9 @@ class StateManager:
             if entity.entity_type != "EV":
                 continue
 
-            # Skip OV-prefixed duplicates (overview topics) — use L-prefixed (InPlay) as canonical
+            # Skip OV-mirror duplicates — keep OVM (unique markets) and L-prefixed (canonical)
             it = entity.it
-            if it.startswith("OV"):
+            if _is_ov_mirror(it):
                 continue
 
             fi = entity.fields.get("FI", "")

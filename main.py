@@ -1,34 +1,38 @@
 """
-Bet365 Real-Time Data Stream
+Bet365 Real-Time Data Stream — Full Market Coverage
 
-Outputs JSONL (one JSON object per line) to stdout.
-All status/progress logging goes to stderr.
+Architecture:
+  1. Overview instance: stays on InPlay page, discovers events, streams
+     scores/times/overview markets in real time.
+  2. Worker pool (--all-markets): one dedicated browser tab per event, each
+     maintaining a persistent 6V subscription for full real-time market data.
+     New events get workers automatically; ended events get cleaned up.
 
-Stream format:
-  1. {"type":"snapshot", ...}   — full state (on start + every --snapshot-interval seconds)
-  2. {"type":"odds", ...}       — odds change
-  3. {"type":"score", ...}      — score change
-  4. {"type":"new_event", ...}  — new event appeared
-  5. {"type":"removed", ...}    — event removed
-  6. {"type":"suspended", ...}  — market suspended
-  7. {"type":"resumed", ...}    — market resumed
+Stream format (JSONL to stdout):
+  {"type":"snapshot", ...}   — full state every --snapshot-interval seconds
+  {"type":"odds", ...}       — odds change (real-time)
+  {"type":"score", ...}      — score change (real-time)
+  {"type":"new_event", ...}  — new event appeared
+  {"type":"removed", ...}    — event removed
+  {"type":"suspended", ...}  — market suspended
+  {"type":"resumed", ...}    — market resumed
 
 Usage:
-    python main.py                                    # overview only (live)
-    python main.py --all-markets                      # load all detail markets + stream
-    python main.py --all-markets --instances 3        # 3 browsers, faster initial load
-    python main.py --all-markets --refresh 10         # refresh detail markets every 10 min
-    python main.py --snapshot-interval 30             # full snapshot every 30s (default: 10)
-    python main.py --all-markets --headed             # visible browser (debug)
+    python main.py                                      # overview only (live)
+    python main.py --all-markets                        # full 6V: 1 tab per event
+    python main.py --all-markets --tabs-per-browser 10  # 10 tabs per browser
+    python main.py --all-markets --concurrency 8        # 8 parallel worker spawns
+    python main.py --all-markets --max-workers 50       # limit to 50 workers
+    python main.py --all-markets --headed               # visible browsers (debug)
 
 Pipe examples:
     python main.py --all-markets | your_consumer.py
     python main.py --all-markets > stream.jsonl
-    python main.py --all-markets | tee stream.jsonl | your_ws_server.py
 """
 
 import asyncio
 import json
+import os
 import re
 import sys
 from datetime import datetime, timezone
@@ -127,6 +131,7 @@ def on_change(evt: ChangeEvent):
 
 
 def get_navigable_events(state: StateManager) -> list[tuple[str, str, str]]:
+    """Get list of (fixture_id, name, detail_hash) for all in-play events."""
     events = []
     for entity in state.entities.values():
         if entity.entity_type != "EV":
@@ -146,13 +151,16 @@ def get_navigable_events(state: StateManager) -> list[tuple[str, str, str]]:
 
 
 class Instance:
-    def __init__(self, instance_id: int, state: StateManager):
-        self.id = instance_id
+    """Overview browser — stays on InPlay page, discovers events."""
+
+    def __init__(self, state: StateManager):
         self.state = state
         self.msg_count = 0
         self.page = None
+        self._browser_cm = None
+        self._browser = None
 
-    def on_frame(self, payload):
+    def _on_frame(self, payload):
         if not isinstance(payload, str):
             return
         try:
@@ -160,31 +168,38 @@ class Instance:
                 self.msg_count += 1
                 self.state.apply(msg)
         except Exception as e:
-            log(f"[I{self.id}] ERR: {e}")
+            log(f"[Overview] ERR: {e}")
 
     async def start(self, headless: bool = True):
-        log(f"[I{self.id}] Starting browser...")
+        log("Starting overview browser...")
         self._browser_cm = AsyncCamoufox(headless=headless)
-        self._browser = await self._browser_cm.__aenter__()
+        # Suppress camoufox download/model messages from polluting stdout
+        old_stdout = sys.stdout
+        sys.stdout = open(os.devnull, "w")
+        try:
+            self._browser = await self._browser_cm.__aenter__()
+        finally:
+            sys.stdout.close()
+            sys.stdout = old_stdout
         self.page = await self._browser.new_page()
 
         def on_ws(ws):
             if "premws" not in ws.url:
                 return
-            log(f"[I{self.id}] WS connected")
-            ws.on("framereceived", self.on_frame)
-            ws.on("close", lambda: log(f"[I{self.id}] WS closed"))
+            log("Overview WS connected")
+            ws.on("framereceived", self._on_frame)
+            ws.on("close", lambda: log("Overview WS closed"))
 
         self.page.on("websocket", on_ws)
 
         try:
             await self.page.goto(URL, wait_until="domcontentloaded", timeout=60000)
         except Exception as e:
-            log(f"[I{self.id}] Navigation: {e}")
+            log(f"Navigation: {e}")
 
         content = await self.page.content()
         if len(content) < 1000:
-            log(f"[I{self.id}] WARNING: blocked")
+            log("WARNING: blocked")
             return False
 
         for _ in range(30):
@@ -194,7 +209,7 @@ class Instance:
                 await asyncio.sleep(2)
                 break
 
-        log(f"[I{self.id}] Ready ({self.msg_count} messages)")
+        log(f"Overview ready ({self.msg_count} messages)")
         return True
 
     async def stop(self):
@@ -203,118 +218,230 @@ class Instance:
         except Exception:
             pass
 
-    async def load_events(self, events: list[tuple[str, str, str]]):
-        if not events:
-            return
-        total = len(events)
-        log(f"[I{self.id}] Loading {total} events...")
-        visited = 0
-        for fi, name, detail_hash in events:
-            try:
-                await self.page.evaluate(f"window.location.hash = '{detail_hash}'")
-            except Exception:
-                continue
-            await asyncio.sleep(NAV_DELAY)
-            self.state.snapshot_markets(fi)
-            visited += 1
-            if visited % 25 == 0:
-                log(f"[I{self.id}]   [{visited}/{total}]")
 
+class WorkerPool:
+    """Pool of browser tabs maintaining persistent 6V subscriptions.
+
+    Each event gets a dedicated browser tab that stays on the event's
+    detail page, keeping the 6V subscription alive for real-time updates
+    on ALL markets.
+    """
+
+    def __init__(self, state: StateManager, headless: bool = True,
+                 tabs_per_browser: int = 5, max_workers: int = 0,
+                 concurrency: int = 5):
+        self.state = state
+        self.headless = headless
+        self.tabs_per_browser = tabs_per_browser
+        self.max_workers = max_workers
+        self.concurrency = concurrency
+        self._browsers: list[dict] = []
+        self._workers: dict[str, dict] = {}
+        self._lock = asyncio.Lock()
+
+    @property
+    def count(self) -> int:
+        return len(self._workers)
+
+    async def _get_browser(self) -> tuple[int, object]:
+        """Get browser with capacity or create new one. Caller must hold _lock."""
+        for i, b in enumerate(self._browsers):
+            if b["tab_count"] < self.tabs_per_browser:
+                return i, b["browser"]
+        cm = AsyncCamoufox(headless=self.headless)
+        old_stdout = sys.stdout
+        sys.stdout = open(os.devnull, "w")
         try:
-            await self.page.evaluate("window.location.hash = '#/IP/'")
-        except Exception:
-            pass
-        await asyncio.sleep(2)
-        for fi, _, _ in events[-25:]:
-            self.state.snapshot_markets(fi)
-        log(f"[I{self.id}] Done loading {visited} events")
+            browser = await cm.__aenter__()
+        finally:
+            sys.stdout.close()
+            sys.stdout = old_stdout
+        idx = len(self._browsers)
+        self._browsers.append({"cm": cm, "browser": browser, "tab_count": 0})
+        log(f"[Pool] Browser #{idx} started")
+        return idx, browser
+
+    async def _spawn_one(self, fi: str, name: str, detail_hash: str) -> bool:
+        """Spawn a single worker tab for an event."""
+        if fi in self._workers:
+            return True
+        if self.max_workers and len(self._workers) >= self.max_workers:
+            return None  # limit reached, distinct from failure
+
+        # Claim a browser slot under lock
+        async with self._lock:
+            browser_idx, browser = await self._get_browser()
+            self._browsers[browser_idx]["tab_count"] += 1
+
+        page = None
+        try:
+            page = await browser.new_page()
+
+            def on_frame(payload):
+                if not isinstance(payload, str):
+                    return
+                try:
+                    for msg in decode_frame(payload):
+                        self.state.apply(msg)
+                except Exception:
+                    pass
+
+            ws_ready = asyncio.Event()
+
+            def on_ws(ws):
+                if "premws" not in ws.url:
+                    return
+                ws.on("framereceived", on_frame)
+                ws_ready.set()
+
+            page.on("websocket", on_ws)
+
+            await page.goto(URL, wait_until="domcontentloaded", timeout=60000)
+
+            # Wait for premws WebSocket to connect
+            await asyncio.wait_for(ws_ready.wait(), timeout=20)
+            await asyncio.sleep(3)
+
+            # Navigate to event detail — triggers 6V subscription
+            await page.evaluate(f"window.location.hash = '{detail_hash}'")
+            await asyncio.sleep(NAV_DELAY)
+
+            self._workers[fi] = {
+                "page": page,
+                "browser_idx": browser_idx,
+                "name": name,
+            }
+            return True
+
+        except Exception as e:
+            log(f"[Pool] {name[:30]} — failed: {e}")
+            async with self._lock:
+                self._browsers[browser_idx]["tab_count"] -= 1
+            if page:
+                try:
+                    await page.close()
+                except Exception:
+                    pass
+            return False
+
+    async def spawn_all(self, events: list[tuple[str, str, str]]):
+        """Spawn workers for all events with controlled concurrency."""
+        sem = asyncio.Semaphore(self.concurrency)
+        total = len(events)
+        done = [0]
+
+        async def _spawn(fi, name, detail_hash):
+            async with sem:
+                result = await self._spawn_one(fi, name, detail_hash)
+                done[0] += 1
+                if result is None:
+                    return  # silently skip (max workers reached)
+                status = "live" if result else "FAILED"
+                log(f"[Pool] {name[:30]} — {status} [{done[0]}/{total}]")
+
+        await asyncio.gather(
+            *[_spawn(fi, n, h) for fi, n, h in events],
+            return_exceptions=True,
+        )
+        log(f"[Pool] {self.count}/{total} workers active")
+
+    async def sync_events(self, events: list[tuple[str, str, str]]):
+        """Add workers for new events, remove workers for ended events."""
+        active_fis = {fi for fi, _, _ in events}
+
+        # Remove workers for ended events
+        stale = [fi for fi in self._workers if fi not in active_fis]
+        for fi in stale:
+            w = self._workers.pop(fi)
+            log(f"[Pool] {w['name'][:30]} — ended, removing")
+            try:
+                await w["page"].close()
+            except Exception:
+                pass
+            async with self._lock:
+                idx = w["browser_idx"]
+                if idx < len(self._browsers):
+                    self._browsers[idx]["tab_count"] -= 1
+
+        # Spawn workers for new events
+        new = [(fi, n, h) for fi, n, h in events if fi not in self._workers]
+        if new:
+            log(f"[Pool] {len(new)} new events detected")
+            await self.spawn_all(new)
+
+    async def stop(self):
+        """Shut down all workers and browsers."""
+        for w in self._workers.values():
+            try:
+                await w["page"].close()
+            except Exception:
+                pass
+        self._workers.clear()
+        for b in self._browsers:
+            try:
+                await b["cm"].__aexit__(None, None, None)
+            except Exception:
+                pass
+        self._browsers.clear()
 
 
 class Monitor:
-    def __init__(self, n_instances=1, headless=True, load_all=False,
-                 refresh_min=0, snapshot_interval=10):
-        self.n_instances = n_instances
+    def __init__(self, headless=True, load_all=False, snapshot_interval=10,
+                 tabs_per_browser=5, max_workers=0, concurrency=5):
         self.headless = headless
         self.load_all = load_all
-        self.refresh_min = refresh_min
         self.snapshot_interval = snapshot_interval
         self.state = StateManager(on_change=on_change)
-        self.instances: list[Instance] = []
-        self.all_loaded_fis: set[str] = set()
+        self.overview = Instance(self.state)
+        self.pool = WorkerPool(
+            self.state,
+            headless=headless,
+            tabs_per_browser=tabs_per_browser,
+            max_workers=max_workers,
+            concurrency=concurrency,
+        ) if load_all else None
 
-    async def snapshot_loop(self):
+    async def _snapshot_loop(self):
         while True:
             await asyncio.sleep(self.snapshot_interval)
             emit({"type": "snapshot", "data": self.state.to_json()})
 
-    async def refresh_loop(self):
+    async def _event_watcher(self):
+        """Watch for new/removed events and manage workers."""
         while True:
-            await asyncio.sleep(self.refresh_min * 60)
+            await asyncio.sleep(30)
             events = get_navigable_events(self.state)
-            new = [(fi, n, h) for fi, n, h in events if fi not in self.all_loaded_fis]
-            for fi, _, _ in new:
-                self.all_loaded_fis.add(fi)
-            all_events = [(fi, n, h) for fi, n, h in events if fi in self.all_loaded_fis]
-            if not all_events:
-                continue
-            log(f"Refreshing {len(all_events)} events ({len(new)} new)...")
-            slices: list[list] = [[] for _ in range(self.n_instances)]
-            for i, ev in enumerate(all_events):
-                slices[i % self.n_instances].append(ev)
-            await asyncio.gather(
-                *[inst.load_events(sl) for inst, sl in zip(self.instances, slices)]
-            )
-            emit({"type": "snapshot", "data": self.state.to_json()})
-            log("Refresh complete")
+            await self.pool.sync_events(events)
 
     async def run(self):
-        log(f"Starting ({self.n_instances} instance{'s' if self.n_instances > 1 else ''}, "
-            f"{'headless' if self.headless else 'headed'})...")
+        mode = "full 6V real-time" if self.load_all else "overview only"
+        log(f"Starting ({mode}, {'headless' if self.headless else 'headed'})...")
 
-        self.instances = [Instance(i, self.state) for i in range(self.n_instances)]
-
-        ok = await self.instances[0].start(self.headless)
+        ok = await self.overview.start(self.headless)
         if not ok:
             log("Failed to start. Try --headed")
             return
 
-        if self.n_instances > 1:
-            results = await asyncio.gather(
-                *[inst.start(self.headless) for inst in self.instances[1:]],
-                return_exceptions=True
-            )
-            for i, r in enumerate(results, 1):
-                if isinstance(r, Exception):
-                    log(f"Instance {i} failed: {r}")
-
         snap = self.state.to_json()
         log(f"Initial: {snap['event_count']} events")
 
-        if self.load_all:
+        if self.load_all and self.pool:
             events = get_navigable_events(self.state)
-            total = len(events)
-            for fi, _, _ in events:
-                self.all_loaded_fis.add(fi)
-            slices: list[list] = [[] for _ in range(self.n_instances)]
-            for i, ev in enumerate(events):
-                slices[i % self.n_instances].append(ev)
-            per_inst = [len(s) for s in slices]
-            log(f"Loading {total} events ({', '.join(str(n) for n in per_inst)} per instance)...")
-            await asyncio.gather(
-                *[inst.load_events(sl) for inst, sl in zip(self.instances, slices)]
-            )
+            n_browsers = (len(events) + self.pool.tabs_per_browser - 1) // self.pool.tabs_per_browser
+            log(f"Spawning {len(events)} workers across ~{n_browsers} browsers "
+                f"({self.pool.tabs_per_browser} tabs/browser, "
+                f"{self.pool.concurrency} concurrent)...")
+            await self.pool.spawn_all(events)
             snap = self.state.to_json()
             mkts = sum(len(ev["markets"]) for ev in snap["events"].values())
-            full = sum(1 for ev in snap["events"].values() if len(ev["markets"]) > 1)
-            log(f"Loaded: {full} events with detail markets, {mkts} total markets")
+            log(f"Live: {self.pool.count} events with full markets, {mkts} total markets")
 
-        # Emit initial snapshot
         emit({"type": "snapshot", "data": self.state.to_json()})
-        log("Streaming...")
+        log("Streaming real-time data...")
 
-        tasks = [asyncio.create_task(self.snapshot_loop())]
-        if self.load_all and self.refresh_min > 0:
-            tasks.append(asyncio.create_task(self.refresh_loop()))
+        tasks = [asyncio.create_task(self._snapshot_loop())]
+        if self.load_all and self.pool:
+            tasks.append(asyncio.create_task(self._event_watcher()))
 
         try:
             while True:
@@ -322,33 +449,43 @@ class Monitor:
         except (KeyboardInterrupt, asyncio.CancelledError):
             for t in tasks:
                 t.cancel()
+            log("Stopping...")
+            if self.pool:
+                await self.pool.stop()
+            await self.overview.stop()
             log("Stopped")
-            for inst in self.instances:
-                await inst.stop()
 
 
 def parse_args():
     headless = "--headed" not in sys.argv
     load_all = "--all-markets" in sys.argv
-    n_instances = 1
-    refresh_min = 0
     snapshot_interval = 10
+    tabs_per_browser = 5
+    max_workers = 0
+    concurrency = 5
+
     for i, arg in enumerate(sys.argv):
-        if arg == "--instances" and i + 1 < len(sys.argv):
-            n_instances = int(sys.argv[i + 1])
-        elif arg == "--refresh" and i + 1 < len(sys.argv):
-            refresh_min = int(sys.argv[i + 1])
-        elif arg == "--snapshot-interval" and i + 1 < len(sys.argv):
+        if arg == "--snapshot-interval" and i + 1 < len(sys.argv):
             snapshot_interval = int(sys.argv[i + 1])
-    return headless, load_all, n_instances, refresh_min, snapshot_interval
+        elif arg == "--tabs-per-browser" and i + 1 < len(sys.argv):
+            tabs_per_browser = int(sys.argv[i + 1])
+        elif arg == "--max-workers" and i + 1 < len(sys.argv):
+            max_workers = int(sys.argv[i + 1])
+        elif arg == "--concurrency" and i + 1 < len(sys.argv):
+            concurrency = int(sys.argv[i + 1])
+
+    return headless, load_all, snapshot_interval, tabs_per_browser, max_workers, concurrency
 
 
 async def main():
-    headless, load_all, n_instances, refresh_min, snapshot_interval = parse_args()
+    headless, load_all, snapshot_interval, tabs_per_browser, max_workers, concurrency = parse_args()
     monitor = Monitor(
-        n_instances=n_instances, headless=headless,
-        load_all=load_all, refresh_min=refresh_min,
+        headless=headless,
+        load_all=load_all,
         snapshot_interval=snapshot_interval,
+        tabs_per_browser=tabs_per_browser,
+        max_workers=max_workers,
+        concurrency=concurrency,
     )
     await monitor.run()
 
