@@ -24,6 +24,7 @@ Usage:
     python main.py --all-markets --concurrency 8        # 8 parallel worker spawns
     python main.py --all-markets --max-workers 50       # limit to 50 workers
     python main.py --all-markets --headed               # visible browsers (debug)
+    python main.py --proxy "http://user:pass@host:port"  # use HTTP/SOCKS5 proxy
 
 Pipe examples:
     python main.py --all-markets | your_consumer.py
@@ -50,6 +51,19 @@ if sys.platform == "win32":
 
 NAV_DELAY = 2.0
 URL = "https://www.bet365.com/"
+PROXY = None  # set via --proxy flag
+
+
+def parse_proxy(url: str) -> dict:
+    """Parse 'http://user:pass@host:port' into Camoufox proxy dict."""
+    from urllib.parse import urlparse
+    p = urlparse(url)
+    proxy = {"server": f"{p.scheme}://{p.hostname}:{p.port}"}
+    if p.username:
+        proxy["username"] = p.username
+    if p.password:
+        proxy["password"] = p.password
+    return proxy
 
 
 def ts() -> str:
@@ -172,7 +186,11 @@ class Instance:
 
     async def start(self, headless: bool = True):
         log("Starting overview browser...")
-        self._browser_cm = AsyncCamoufox(headless=headless)
+        kw = {"headless": headless}
+        if PROXY:
+            kw["proxy"] = PROXY
+            kw["geoip"] = True
+        self._browser_cm = AsyncCamoufox(**kw)
         # Suppress camoufox download/model messages from polluting stdout
         old_stdout = sys.stdout
         sys.stdout = open(os.devnull, "w")
@@ -248,7 +266,11 @@ class WorkerPool:
         for i, b in enumerate(self._browsers):
             if b["tab_count"] < self.tabs_per_browser:
                 return i, b["browser"]
-        cm = AsyncCamoufox(headless=self.headless)
+        kw = {"headless": self.headless}
+        if PROXY:
+            kw["proxy"] = PROXY
+            kw["geoip"] = True
+        cm = AsyncCamoufox(**kw)
         old_stdout = sys.stdout
         sys.stdout = open(os.devnull, "w")
         try:
@@ -495,6 +517,7 @@ class Monitor:
 
 
 def parse_args():
+    global PROXY
     headless = "--headed" not in sys.argv
     load_all = "--all-markets" in sys.argv
     snapshot_interval = 10
@@ -511,6 +534,9 @@ def parse_args():
             max_workers = int(sys.argv[i + 1])
         elif arg == "--concurrency" and i + 1 < len(sys.argv):
             concurrency = int(sys.argv[i + 1])
+        elif arg == "--proxy" and i + 1 < len(sys.argv):
+            PROXY = parse_proxy(sys.argv[i + 1])
+            log(f"Proxy: {PROXY['server']}")
 
     return headless, load_all, snapshot_interval, tabs_per_browser, max_workers, concurrency
 
