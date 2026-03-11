@@ -37,6 +37,9 @@ import os
 import re
 import sys
 from datetime import datetime, timezone
+from urllib.parse import parse_qs, urlparse
+
+import websockets
 
 from camoufox.async_api import AsyncCamoufox
 from protocol import decode_frame
@@ -52,6 +55,9 @@ if sys.platform == "win32":
 NAV_DELAY = 2.0
 URL = "https://www.bet365.com/"
 PROXY = None  # set via --proxy flag
+WS_PORT = 8080
+WS_TOKEN = None
+WS_CLIENTS: set = set()
 
 
 def parse_proxy(url: str) -> dict:
@@ -75,9 +81,12 @@ def log(msg: str):
 
 
 def emit(obj: dict):
-    """Write a JSON object to stdout (one line)."""
+    """Write a JSON object to stdout and broadcast to WS clients."""
     obj["ts"] = datetime.now(timezone.utc).isoformat()
-    print(json.dumps(obj, ensure_ascii=False), flush=True)
+    line = json.dumps(obj, ensure_ascii=False)
+    print(line, flush=True)
+    if WS_CLIENTS:
+        websockets.broadcast(WS_CLIENTS, line)
 
 
 def on_change(evt: ChangeEvent):
@@ -444,6 +453,25 @@ class WorkerPool:
         self._browsers.clear()
 
 
+async def ws_handler(websocket):
+    """Handle incoming WebSocket connections with token auth."""
+    # Auth: expect token as query param ?token=SECRET
+    params = parse_qs(urlparse(websocket.request.path).query)
+    token = (params.get("token") or [None])[0]
+    if WS_TOKEN and token != WS_TOKEN:
+        await websocket.close(4001, "Unauthorized")
+        return
+
+    WS_CLIENTS.add(websocket)
+    log(f"[WS] Client connected ({len(WS_CLIENTS)} total)")
+    try:
+        async for _ in websocket:
+            pass  # keep alive, ignore incoming messages
+    finally:
+        WS_CLIENTS.discard(websocket)
+        log(f"[WS] Client disconnected ({len(WS_CLIENTS)} total)")
+
+
 class Monitor:
     def __init__(self, headless=True, load_all=False, snapshot_interval=10,
                  tabs_per_browser=5, max_workers=0, concurrency=5):
@@ -497,6 +525,10 @@ class Monitor:
             log(f"Live: {self.pool.count} events with full markets, {mkts} total markets")
 
         emit({"type": "snapshot", "data": self.state.to_json()})
+
+        # Start WebSocket server
+        ws_server = await websockets.serve(ws_handler, "0.0.0.0", WS_PORT)
+        log(f"WebSocket server on port {WS_PORT} (token={'required' if WS_TOKEN else 'none'})")
         log("Streaming real-time data...")
 
         tasks = [asyncio.create_task(self._snapshot_loop())]
@@ -510,6 +542,8 @@ class Monitor:
             for t in tasks:
                 t.cancel()
             log("Stopping...")
+            ws_server.close()
+            await ws_server.wait_closed()
             if self.pool:
                 await self.pool.stop()
             await self.overview.stop()
@@ -517,7 +551,7 @@ class Monitor:
 
 
 def parse_args():
-    global PROXY
+    global PROXY, WS_PORT, WS_TOKEN
     headless = "--headed" not in sys.argv
     load_all = "--all-markets" in sys.argv
     snapshot_interval = 10
@@ -537,6 +571,10 @@ def parse_args():
         elif arg == "--proxy" and i + 1 < len(sys.argv):
             PROXY = parse_proxy(sys.argv[i + 1])
             log(f"Proxy: {PROXY['server']}")
+        elif arg == "--ws-port" and i + 1 < len(sys.argv):
+            WS_PORT = int(sys.argv[i + 1])
+        elif arg == "--ws-token" and i + 1 < len(sys.argv):
+            WS_TOKEN = sys.argv[i + 1]
 
     return headless, load_all, snapshot_interval, tabs_per_browser, max_workers, concurrency
 
