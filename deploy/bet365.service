@@ -1,0 +1,52 @@
+[Unit]
+Description=Bet365 Live Data Stream
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=bet365
+Group=bet365
+WorkingDirectory=/opt/bet365
+EnvironmentFile=/opt/bet365/.env
+
+# Build proxy args: split comma-separated PROXY_URLS into multiple --proxy flags
+ExecStart=/bin/bash -c '\
+    PROXY_ARGS=""; \
+    IFS="," read -ra URLS <<< "${PROXY_URLS}"; \
+    for url in "${URLS[@]}"; do PROXY_ARGS+=" --proxy $url"; done; \
+    LTESOCKS_ARGS=""; \
+    if [ -n "${LTESOCKS_API_TOKEN}" ] && [ "${LTESOCKS_API_TOKEN}" != "your_api_token_here" ]; then \
+        LTESOCKS_ARGS="--ltesocks-token ${LTESOCKS_API_TOKEN} --ltesocks-ports ${LTESOCKS_PORT_IDS}"; \
+    fi; \
+    exec /opt/bet365/venv/bin/python main.py \
+        --all-markets \
+        $PROXY_ARGS \
+        $LTESOCKS_ARGS \
+        --ws-port ${WS_PORT} \
+        --ws-token ${WS_TOKEN} \
+        --tabs-per-browser ${TABS_PER_BROWSER} \
+        --max-workers ${MAX_WORKERS} \
+        --concurrency ${CONCURRENCY} \
+        --snapshot-interval ${SNAPSHOT_INTERVAL}'
+
+# Auto-restart on crash (30s delay — script has its own internal restart loop)
+Restart=always
+RestartSec=30
+
+# Resource limits
+LimitNOFILE=65536
+LimitNPROC=32768
+
+# Logging — stdout goes to journal + file
+StandardOutput=append:/opt/bet365/logs/stream.jsonl
+StandardError=journal
+
+# Security hardening
+NoNewPrivileges=yes
+ProtectSystem=strict
+ReadWritePaths=/opt/bet365
+PrivateTmp=yes
+
+[Install]
+WantedBy=multi-user.target

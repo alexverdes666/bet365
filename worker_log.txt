@@ -1,99 +1,259 @@
-[22:30:43] Starting (full 6V real-time, headless)...
-[22:30:43] Starting overview browser...
-[22:30:51] Overview WS connected
-[22:30:58] Overview ready (86 messages)
-[22:30:58] Initial: 96 events
-[22:30:58] Spawning 95 workers across ~19 browsers (5 tabs/browser, 5 concurrent)...
-[22:31:03] [Pool] Browser #0 started
-[22:31:23] [Pool] Коубан Империъл v Хелаху — live [1/95]
-[22:31:38] [Pool] Browser #1 started
-[22:31:50] [Pool] Реал Соача Кундинамарка v ФК И — live [2/95]
-[22:32:04] [Pool] Депортиво Масая v Чинандега — live [3/95]
-[22:32:15] [Pool] Кавалиер v Молинес Юнайтед — live [4/95]
-[22:32:24] [Pool] Олуейс Реди v Боливар — live [5/95]
-[22:32:24] [Pool] Антигуа и Барбуда (Ж) v Гвиана — FAILED [6/95]
-[22:32:24] [Pool] Benfica (SPACE) v Sporting (A1 — FAILED [7/95]
-[22:32:24] [Pool] FC Porto (R0ge) v Vitoria SC ( — FAILED [8/95]
-[22:32:24] [Pool] France (volvo) v Argentina (Ni — FAILED [9/95]
-[22:32:24] [Pool] A.Madrid (Hussein) v A.Bilbao  — FAILED [10/95]
-[22:32:24] [Pool] Villarreal (Arthur) v Real Mad — FAILED [11/95]
-[22:32:24] [Pool] A.Madrid (ODYSSEY) v Barcelona — FAILED [12/95]
-[22:32:24] [Pool] Arsenal (DANTE) v Newcastle (H — FAILED [13/95]
-[22:32:24] [Pool] Mexico (Andrew) v USA (Groma) — FAILED [14/95]
-[22:32:24] [Pool] Norway (Kostolom89) v Netherla — FAILED [15/95]
-[22:32:24] [Pool] Чун Хсин Ценг v Себастиан Баез — FAILED [16/95]
-[22:32:24] [Pool] Джейкъб Фърнли v Дамир Джумхур — FAILED [17/95]
-[22:32:24] [Pool] Хуберт Хуркач v Александър Ков — FAILED [18/95]
-[22:32:24] [Pool] Дона Векич v Тереза ​​Валентов — FAILED [19/95]
-[22:32:24] [Pool] Даян Пари v Винъс Уилямс — FAILED [20/95]
-[22:32:24] [Pool] Елса Джакмот v Ана Бондар — FAILED [21/95]
-[22:32:24] [Pool] Карлос Мария Сарате v Томас Фа — FAILED [22/95]
-[22:32:24] [Pool] Сантияго Родригес Таверна v Ни — FAILED [23/95]
-[22:32:24] [Pool] Езекиел Монферер v Диего Дедур — FAILED [24/95]
-[22:32:24] [Pool] Куин Вандекастийл v Рарес Теод — FAILED [25/95]
-[22:32:24] [Pool] Ана Табунщик v Жаеда Даниел — FAILED [26/95]
-[22:32:24] [Pool] Рийд Джарвис/Джейми Ванс v Дан — FAILED [27/95]
-[22:32:24] [Pool] Бенджамин Азар/Miko Lapalme v  — FAILED [28/95]
-[22:32:24] [Pool] Катрин Сие/София Сие v Михаела — FAILED [29/95]
-[22:32:24] [Pool] Сара Ерани/Джасмин Паолини v Ж — FAILED [30/95]
-[22:32:24] [Pool] Дрейк @ Южен Илинойс — FAILED [31/95]
-[22:32:24] [Pool] Саут Каролина Стейт @ Норд Кар — FAILED [32/95]
-[22:32:24] [Pool] Самфорд (Ж) @ Уфорд (Ж) — FAILED [33/95]
-[22:32:24] [Pool] СИУ Едуардсвил (Ж) @ Саудърн И — FAILED [34/95]
-[22:32:24] [Pool] Калифорния (Ж) @ Сиракуза (Ж) — FAILED [35/95]
-[22:32:24] [Pool] Джордж Вашингтон (Ж) @ Дейтън  — FAILED [36/95]
-[22:32:24] [Pool] Западна Джорджия (Ж) @ Джаксън — FAILED [37/95]
-[22:32:24] [Pool] Сан Диего (Ж) @ Сейнт Мерис (Ж — FAILED [38/95]
-[22:32:24] [Pool] МК Алжер vs ТРА Драриа — FAILED [39/95]
-[22:32:24] [Pool] Куимса LDD vs Ферро LDD — FAILED [40/95]
-[22:32:24] [Pool] ИВВ/КЕТАФ vs Баскет Жоакаба — FAILED [41/95]
-[22:32:24] [Pool] Каксиас До Сул vs Униао Коринт — FAILED [42/95]
-[22:32:24] [Pool] Сао Хосе vs Баскет Осаско — FAILED [43/95]
-[22:32:24] [Pool] Бауру vs Форталеза — FAILED [44/95]
-[22:32:24] [Pool] Идалго (Ж) vs Тек Мтй Сем (Ж) — FAILED [45/95]
-[22:32:24] [Pool] Спортинг Кп до 22 цени vs СИМЕ — FAILED [46/95]
-[22:32:24] [Pool] NY Knicks (FIVESTAR) @ BOS Cel — FAILED [47/95]
-[22:32:24] [Pool] TOR Raptors (ARCHITECT) @ MIA  — FAILED [48/95]
-[22:32:24] [Pool] CLE Cavaliers (COMMANDER) @ MI — FAILED [49/95]
-[22:32:24] [Pool] OKC Thunder (SIGNAL) @ BOS Cel — FAILED [50/95]
-[22:32:24] [Pool] BOS Celtics (BLADE) @ OKC Thun — FAILED [51/95]
-[22:32:24] [Pool] NY Knicks (PHARAOH) @ LA Laker — FAILED [52/95]
-[22:32:24] [Pool] СД Падрес @ СИА Маринърс — FAILED [53/95]
-[22:32:24] [Pool] ЛА Доджърс @ СИН Редс — FAILED [54/95]
-[22:32:24] [Pool] МИЛ Брюърс @ КОЛ Рокис — FAILED [55/95]
-[22:32:24] [Pool] Есмориз ГС до 21 v SC Espinho  — FAILED [56/95]
-[22:32:24] [Pool] Academica De Espinho v ААС Мам — FAILED [57/95]
-[22:32:24] [Pool] Соросаба (Ж) v Град Бразилия ( — FAILED [58/95]
-[22:32:24] [Pool] Тихука ТК (Ж) v Макинзи (Ж) — FAILED [59/95]
-[22:32:24] [Pool] Сеси Бауру (Ж) v Сеара (Ж) — FAILED [60/95]
-[22:32:24] [Pool] Сао Каетано (Ж) v Чапеко (Ж) — FAILED [61/95]
-[22:32:24] [Pool] Сан Исидро (Ж) v Баиензе дел Н — FAILED [62/95]
-[22:32:24] [Pool] Фалон Шерок v Нийл Дъф — FAILED [63/95]
-[22:32:24] [Pool] Джони Клейтън v Люк Литлър — FAILED [64/95]
-[22:32:24] [Pool] 10.32 Hipo Chile (Състезание 1 — FAILED [65/95]
-[22:32:24] [Pool] Състезание 9 Oaklawn Park — FAILED [66/95]
-[22:32:24] [Pool] Състезание 1 Penn National — FAILED [67/95]
-[22:32:24] [Pool] Състезание 6 Turf Paradise — FAILED [68/95]
-[22:32:24] [Pool] Състезание 1 Turfway Park — FAILED [69/95]
-[22:32:24] [Pool] Състезание 9 Fair Grounds — FAILED [70/95]
-[22:32:24] [Pool] Състезание 10 Gulfstream — FAILED [71/95]
-[22:32:24] [Pool] Eduardo/Николас v Vilsomar/Bon — FAILED [72/95]
-[22:32:24] [Pool] Барбара/Dayane v Aninha/Carol  — FAILED [73/95]
-[22:32:24] [Pool] Juca/Lucas v Joao Mares/Gabrie — FAILED [74/95]
-[22:32:24] [Pool] Кирил Дарин v Михал Ведмох — FAILED [75/95]
-[22:32:24] [Pool] Сергей Рак v Денис Щербак — FAILED [76/95]
-[22:32:24] [Pool] Анатолий Назаров v Андрии Дере — FAILED [77/95]
-[22:32:24] [Pool] Bartolomej Jonas v Патрик Йоки — FAILED [78/95]
-[22:32:24] [Pool] Васил Вербяни v Бохдан Кохут — FAILED [79/95]
-[22:32:24] [Pool] Даниел Приесол v Даниел Тин — FAILED [80/95]
-[22:32:24] [Pool] Камил Клочек v Ярослав Ролак — FAILED [81/95]
-[22:32:24] [Pool] Карел Брозик v Ондрей Свача — FAILED [82/95]
-[22:32:24] [Pool] Мачей Колек v Матеуш Рутковски — FAILED [83/95]
-[22:32:24] [Pool] Олександр Мелашенко v Констант — FAILED [84/95]
-[22:32:24] [Pool] Томаш Червени мл. v Зденек Дуз — FAILED [85/95]
-[22:32:24] [Pool] Якуб Велес v Матос Климента — FAILED [86/95]
-[22:32:24] [Pool] Якуб Немечек старши v Степан К — FAILED [87/95]
-[22:32:24] [Pool] Якуб Симечек v Марек Волни — FAILED [88/95]
-[22:32:24] [Pool] Яромир Зламал v Филип Сернота — FAILED [89/95]
-[22:32:24] [Pool] Франция (Ж) v Чили (Ж) — FAILED [90/95]
-[22:32:24] [Pool] Isurus v Keyd Stars — FAILED [91/95]
+[10:07:21] Proxy: http://188.126.20.21:9081
+[10:07:21] Starting (full 6V real-time, headless)...
+[10:07:21] Starting overview browser...
+[10:07:31] Overview WS connected
+[10:07:31] Overview WS closed
+[10:07:32] Overview WS connected
+[10:07:33] Overview WS closed
+[10:07:33] Overview WS connected
+[10:07:38] Overview ready (121 messages)
+[10:07:38] Initial: 126 events
+[10:07:38] Spawning 126 workers across ~26 browsers (5 tabs/browser, 5 concurrent)...
+[10:07:42] [Pool] Browser #0 started
+[10:07:54] [Pool] Lokomotiv Tbilisi v FC Iberia  — live [1/126]
+[10:07:58] [Pool] Browser #1 started
+[10:08:11] [Pool] Giresun Sanayispor (F) v Yükse — live [2/126]
+[10:08:22] [Pool] Al Hilal (dm1trena) v Al Ittih — live [3/126]
+[10:08:32] [Pool] Inter (Lio) v Bayern (Eros) — live [4/126]
+[10:08:44] [Pool] PSG (Furious) v Real Madrid (J — live [5/126]
+[10:08:56] [Pool] France (SMHAMILA) v England (F — live [6/126]
+[10:09:04] [Pool] Browser #2 started
+[10:09:18] [Pool] Napoli (BEHEMOTH) v Liverpool  — live [7/126]
+[10:09:31] [Pool] Stefano Napolitano v Maximilia — live [8/126]
+[10:09:42] [Pool] Federico Iannaccone v Maxim Mr — live [9/126]
+[10:09:53] [Pool] Tom Gentzsch v Petr Nesterov — live [10/126]
+[10:10:04] [Pool] Maja Chwalinska v Tamara Zidan — live [11/126]
+[10:10:11] [Pool] Browser #3 started
+[10:10:29] [Pool] Leyre Romero Gormaz v Katarzyn — live [12/126]
+[10:10:33] [Pool] Mechal FC (F) v Arba Minch (F) — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:33] [Pool] Mechal FC (F) v Arba Minch (F) — FAILED [13/126]
+[10:10:33] [Pool] FC Iberia 2010 v Dinamo Tbilis — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:33] [Pool] FC Iberia 2010 v Dinamo Tbilis — FAILED [14/126]
+[10:10:33] [Pool] Sankata FC v Shree Bhagwati Cl — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:33] [Pool] Sankata FC v Shree Bhagwati Cl — FAILED [15/126]
+[10:10:33] [Pool] Fenerbahce S.K. (F) v 1207 Ant — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:33] [Pool] Fenerbahce S.K. (F) v 1207 Ant — FAILED [16/126]
+[10:10:33] [Pool] Polina Kudermetova v Moyuka Uc — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:33] [Pool] Polina Kudermetova v Moyuka Uc — FAILED [17/126]
+[10:10:33] [Pool] Alexandre Aubriot v Luca Wiede — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:33] [Pool] Alexandre Aubriot v Luca Wiede — FAILED [18/126]
+[10:10:33] [Pool] Yannik Kelm v Isaac Becroft — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:33] [Pool] Yannik Kelm v Isaac Becroft — FAILED [19/126]
+[10:10:33] [Pool] Alessandro Pecci v Marcel Kamr — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:33] [Pool] Alessandro Pecci v Marcel Kamr — FAILED [20/126]
+[10:10:33] [Pool] Federico Bondioli v Wishaya Tr — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:33] [Pool] Federico Bondioli v Wishaya Tr — FAILED [21/126]
+[10:10:33] [Pool] Seydina Andre v Alan Wazny — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:33] [Pool] Seydina Andre v Alan Wazny — FAILED [22/126]
+[10:10:33] [Pool] Kajsa Rinaldo Persson v Alena  — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:33] [Pool] Kajsa Rinaldo Persson v Alena  — FAILED [23/126]
+[10:10:33] [Pool] Elena Ruxandra Bertea v Jessic — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:33] [Pool] Elena Ruxandra Bertea v Jessic — FAILED [24/126]
+[10:10:33] [Pool] Sada Nahimana v Martha Matoula — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:33] [Pool] Sada Nahimana v Martha Matoula — FAILED [25/126]
+[10:10:33] [Pool] Jennifer Ruggeri v Marina Bass — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:33] [Pool] Jennifer Ruggeri v Marina Bass — FAILED [26/126]
+[10:10:33] [Pool] Elena-Teodora Cadar v Yasmin E — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:33] [Pool] Elena-Teodora Cadar v Yasmin E — FAILED [27/126]
+[10:10:33] [Pool] Caterina Odorizzi v Coco Bosma — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:33] [Pool] Caterina Odorizzi v Coco Bosma — FAILED [28/126]
+[10:10:33] [Pool] Kurumi Tamura v Camilla Zanoli — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:33] [Pool] Kurumi Tamura v Camilla Zanoli — FAILED [29/126]
+[10:10:33] [Pool] Bozemoj/Pel v Shanmugam/Suresh — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:33] [Pool] Bozemoj/Pel v Shanmugam/Suresh — FAILED [30/126]
+[10:10:33] [Pool] Banthia/Donski v Bax/Ouakaa — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:33] [Pool] Banthia/Donski v Bax/Ouakaa — FAILED [31/126]
+[10:10:33] [Pool] Jans/Visker v Drzewiecki/Walko — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:33] [Pool] Jans/Visker v Drzewiecki/Walko — FAILED [32/126]
+[10:10:33] [Pool] Vega Hernandez/Winter Lopez v  — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:33] [Pool] Vega Hernandez/Winter Lopez v  — FAILED [33/126]
+[10:10:33] [Pool] Daniel Masur v Hazem Naw — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:33] [Pool] Daniel Masur v Hazem Naw — FAILED [34/126]
+[10:10:33] [Pool] Marvin Moeller v Kai Wehnelt — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:33] [Pool] Marvin Moeller v Kai Wehnelt — FAILED [35/126]
+[10:10:33] [Pool] Felipe Virgili Berini v Lorenz — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:33] [Pool] Felipe Virgili Berini v Lorenz — FAILED [36/126]
+[10:10:33] [Pool] Iannis Miletich v Nik Mikovic — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:33] [Pool] Iannis Miletich v Nik Mikovic — FAILED [37/126]
+[10:10:33] [Pool] Tommaso Compagnucci v Karlo Ka — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:33] [Pool] Tommaso Compagnucci v Karlo Ka — FAILED [38/126]
+[10:10:33] [Pool] Adan Freire Da Silva v Fons Va — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:33] [Pool] Adan Freire Da Silva v Fons Va — FAILED [39/126]
+[10:10:33] [Pool] Amit Vales v Lorenzo Angelini — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:33] [Pool] Amit Vales v Lorenzo Angelini — FAILED [40/126]
+[10:10:33] [Pool] Ryan Colby v Giulio Perego — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:33] [Pool] Ryan Colby v Giulio Perego — FAILED [41/126]
+[10:10:33] [Pool] Arianna Zucchini v Adithya Kar — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:33] [Pool] Arianna Zucchini v Adithya Kar — FAILED [42/126]
+[10:10:33] [Pool] Dune Vaissaud v Hibah Shaikh — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:33] [Pool] Dune Vaissaud v Hibah Shaikh — FAILED [43/126]
+[10:10:33] [Pool] Federica Urgesi v Eva Guerrero — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:33] [Pool] Federica Urgesi v Eva Guerrero — FAILED [44/126]
+[10:10:33] [Pool] Astrid Cirotte v Yelyzaveta Ko — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:33] [Pool] Astrid Cirotte v Yelyzaveta Ko — FAILED [45/126]
+[10:10:33] [Pool] Lucia Cortez Llorca v Maria Ga — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:33] [Pool] Lucia Cortez Llorca v Maria Ga — FAILED [46/126]
+[10:10:33] [Pool] Lucie Nguyen Tan v Jacqueline  — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:33] [Pool] Lucie Nguyen Tan v Jacqueline  — FAILED [47/126]
+[10:10:33] [Pool] Sun/Wang v Deng/Wang — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:33] [Pool] Sun/Wang v Deng/Wang — FAILED [48/126]
+[10:10:33] [Pool] Eastern Cape Iinyathi v Limpop — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:33] [Pool] Eastern Cape Iinyathi v Limpop — FAILED [49/126]
+[10:10:33] [Pool] Iowa Wolves @ Iowa United — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:33] [Pool] Iowa Wolves @ Iowa United — FAILED [50/126]
+[10:10:33] [Pool] Mali (F) vs Chequia (F) — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:33] [Pool] Mali (F) vs Chequia (F) — FAILED [51/126]
+[10:10:33] [Pool] Muntinlupa Cagers vs Ilagan Is — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:33] [Pool] Muntinlupa Cagers vs Ilagan Is — FAILED [52/126]
+[10:10:33] [Pool] University of Taipei (F) vs Cu — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:33] [Pool] University of Taipei (F) vs Cu — FAILED [53/126]
+[10:10:33] [Pool] Seoul Knights vs Dongbu Promy — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:33] [Pool] Seoul Knights vs Dongbu Promy — FAILED [54/126]
+[10:10:33] [Pool] Yokohama Excellence vs Rizing  — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:33] [Pool] Yokohama Excellence vs Rizing  — FAILED [55/126]
+[10:10:34] [Pool] NO Pelicans (The_Professor) @  — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] NO Pelicans (The_Professor) @  — FAILED [56/126]
+[10:10:34] [Pool] PHI 76ers (Andrik) @ MIA Heat  — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] PHI 76ers (Andrik) @ MIA Heat  — FAILED [57/126]
+[10:10:34] [Pool] CHA Hornets (BROOK) @ DAL Mave — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] CHA Hornets (BROOK) @ DAL Mave — FAILED [58/126]
+[10:10:34] [Pool] OKC Thunder (KJMR) @ LA Lakers — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] OKC Thunder (KJMR) @ LA Lakers — FAILED [59/126]
+[10:10:34] [Pool] MIA Heat (JD) @ BKN Nets (GALA — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] MIA Heat (JD) @ BKN Nets (GALA — FAILED [60/126]
+[10:10:34] [Pool] PHX Suns (SPECTER) @ CLE Caval — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] PHX Suns (SPECTER) @ CLE Caval — FAILED [61/126]
+[10:10:34] [Pool] Chu/Lu vs He/Ren — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Chu/Lu vs He/Ren — FAILED [62/126]
+[10:10:34] [Pool] Hiramoto/Ishikawa vs Liao/Shen — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Hiramoto/Ishikawa vs Liao/Shen — FAILED [63/126]
+[10:10:34] [Pool] Yomiuri Giants @ Softbank Hawk — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Yomiuri Giants @ Softbank Hawk — FAILED [64/126]
+[10:10:34] [Pool] 10.00 Mont De Marsan (Carrera  — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] 10.00 Mont De Marsan (Carrera  — FAILED [65/126]
+[10:10:34] [Pool] Carrera 10 - Funabashi — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Carrera 10 - Funabashi — FAILED [66/126]
+[10:10:34] [Pool] 10.15 Turffontein (Carrera 2) — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] 10.15 Turffontein (Carrera 2) — FAILED [67/126]
+[10:10:34] [Pool] Carrera 11 - Funabashi — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Carrera 11 - Funabashi — FAILED [68/126]
+[10:10:34] [Pool] Carrera 12 - Funabashi — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Carrera 12 - Funabashi — FAILED [69/126]
+[10:10:34] [Pool] 10.35 Mont De Marsan (Carrera  — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] 10.35 Mont De Marsan (Carrera  — FAILED [70/126]
+[10:10:34] [Pool] Carrera 10 - Nagoya — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Carrera 10 - Nagoya — FAILED [71/126]
+[10:10:34] [Pool] 10.51 Caen (Carrera 1) — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] 10.51 Caen (Carrera 1) — FAILED [72/126]
+[10:10:34] [Pool] Carrera 8 - Warrnambool — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Carrera 8 - Warrnambool — FAILED [73/126]
+[10:10:34] [Pool] Carrera 10 - Casino — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Carrera 10 - Casino — FAILED [74/126]
+[10:10:34] [Pool] Carrera 9 - Warrnambool — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Carrera 9 - Warrnambool — FAILED [75/126]
+[10:10:34] [Pool] Carrera 8 - Hobart — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Carrera 8 - Hobart — FAILED [76/126]
+[10:10:34] [Pool] Carrera 8 - Sandown Park — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Carrera 8 - Sandown Park — FAILED [77/126]
+[10:10:34] [Pool] Carrera 8 - Angle Park — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Carrera 8 - Angle Park — FAILED [78/126]
+[10:10:34] [Pool] Carrera 11 - Casino — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Carrera 11 - Casino — FAILED [79/126]
+[10:10:34] [Pool] Carrera 2 - Mandurah — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Carrera 2 - Mandurah — FAILED [80/126]
+[10:10:34] [Pool] Carrera 3 - Mandurah — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Carrera 3 - Mandurah — FAILED [81/126]
+[10:10:34] [Pool] Carrera 9 - Sandown Park — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Carrera 9 - Sandown Park — FAILED [82/126]
+[10:10:34] [Pool] Carrera 9 - Hobart — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Carrera 9 - Hobart — FAILED [83/126]
+[10:10:34] [Pool] Carrera 7 - Q2 Parklands — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Carrera 7 - Q2 Parklands — FAILED [84/126]
+[10:10:34] [Pool] Carrera 8 - Q2 Parklands — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Carrera 8 - Q2 Parklands — FAILED [85/126]
+[10:10:34] [Pool] Carrera 9 - Q2 Parklands — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Carrera 9 - Q2 Parklands — FAILED [86/126]
+[10:10:34] [Pool] Carrera 9 - Angle Park — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Carrera 9 - Angle Park — FAILED [87/126]
+[10:10:34] [Pool] Carrera 8 - Wentworth Park — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Carrera 8 - Wentworth Park — FAILED [88/126]
+[10:10:34] [Pool] Carrera 9 - Wentworth Park — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Carrera 9 - Wentworth Park — FAILED [89/126]
+[10:10:34] [Pool] Carrera 10 - Warrnambool — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Carrera 10 - Warrnambool — FAILED [90/126]
+[10:10:34] [Pool] Carrera 12 - Casino — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Carrera 12 - Casino — FAILED [91/126]
+[10:10:34] [Pool] Carlton v Richmond — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Carlton v Richmond — FAILED [92/126]
+[10:10:34] [Pool] Brisbane Broncos v Parramatta  — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Brisbane Broncos v Parramatta  — FAILED [93/126]
+[10:10:34] [Pool] Paul Coll vs Auguste Dussourd — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Paul Coll vs Auguste Dussourd — FAILED [94/126]
+[10:10:34] [Pool] Alexandr Virag v Zbynek Ziente — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Alexandr Virag v Zbynek Ziente — FAILED [95/126]
+[10:10:34] [Pool] Damian Zech v Marcel Neumaier — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Damian Zech v Marcel Neumaier — FAILED [96/126]
+[10:10:34] [Pool] Karol Strowski v Marcin Balcer — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Karol Strowski v Marcin Balcer — FAILED [97/126]
+[10:10:34] [Pool] Ludek Madle v Alexander Hejduk — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Ludek Madle v Alexander Hejduk — FAILED [98/126]
+[10:10:34] [Pool] Lukasz Jarocki v Adrian Spycha — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Lukasz Jarocki v Adrian Spycha — FAILED [99/126]
+[10:10:34] [Pool] Martin Bouska v Ladislav Dobia — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Martin Bouska v Ladislav Dobia — FAILED [100/126]
+[10:10:34] [Pool] Martin Dvorak v Tomas Rein — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Martin Dvorak v Tomas Rein — FAILED [101/126]
+[10:10:34] [Pool] Michal Blaha v Zdenek Luksa — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Michal Blaha v Zdenek Luksa — FAILED [102/126]
+[10:10:34] [Pool] Michal Vavrecka v Tomas Postel — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Michal Vavrecka v Tomas Postel — FAILED [103/126]
+[10:10:34] [Pool] Mykola Pohorilyi v Oleh Torian — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Mykola Pohorilyi v Oleh Torian — FAILED [104/126]
+[10:10:34] [Pool] Oleksandr Hordiichuk v Vitalii — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Oleksandr Hordiichuk v Vitalii — FAILED [105/126]
+[10:10:34] [Pool] Oleksandr Ziakun v Maksym Hube — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Oleksandr Ziakun v Maksym Hube — FAILED [106/126]
+[10:10:34] [Pool] Olha Kolbasenko v Svetlana Yur — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Olha Kolbasenko v Svetlana Yur — FAILED [107/126]
+[10:10:34] [Pool] Radim Pavelka v Vladimir Poste — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Radim Pavelka v Vladimir Poste — FAILED [108/126]
+[10:10:34] [Pool] Serhii Solomko v Serhii Semene — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Serhii Solomko v Serhii Semene — FAILED [109/126]
+[10:10:34] [Pool] Vaclav Coubal v Jan Vrnak — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Vaclav Coubal v Jan Vrnak — FAILED [110/126]
+[10:10:34] [Pool] Viktor Kodola v Anatolii Nikol — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Viktor Kodola v Anatolii Nikol — FAILED [111/126]
+[10:10:34] [Pool] Yurii Volkov v Eduard Populovs — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Yurii Volkov v Eduard Populovs — FAILED [112/126]
+[10:10:34] [Pool] Carrera 6 - Kilmore — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Carrera 6 - Kilmore — FAILED [113/126]
+[10:10:34] [Pool] Carrera 7 - Penrith — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Carrera 7 - Penrith — FAILED [114/126]
+[10:10:34] [Pool] Daejeon JungKwanJang (F) v Hyu — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Daejeon JungKwanJang (F) v Hyu — FAILED [115/126]
+[10:10:34] [Pool] Korean Air Jumbos v KB Stars — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Korean Air Jumbos v KB Stars — FAILED [116/126]
+[10:10:34] [Pool] Akari Chargers (F) v Creamline — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Akari Chargers (F) v Creamline — FAILED [117/126]
+[10:10:34] [Pool] Chema VC v Eldowas — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Chema VC v Eldowas — FAILED [118/126]
+[10:10:34] [Pool] Khiuaz/Atyrau (F) v Taraz (F) — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Khiuaz/Atyrau (F) v Taraz (F) — FAILED [119/126]
+[10:10:34] [Pool] Enka Sports Club v Vitória SC — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Enka Sports Club v Vitória SC — FAILED [120/126]
+[10:10:34] [Pool] Rapid Reflexes v SpeedRunners — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Rapid Reflexes v SpeedRunners — FAILED [121/126]
+[10:10:34] [Pool] Nuria Brancaccio v Julia Grabh — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Nuria Brancaccio v Julia Grabh — FAILED [122/126]
+[10:10:34] [Pool] CYBERSHOKE v MOUZ NXT — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] CYBERSHOKE v MOUZ NXT — FAILED [123/126]
+[10:10:34] [Pool] Sangal ALTERS v Imperial Acade — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Sangal ALTERS v Imperial Acade — FAILED [124/126]
+[10:10:34] [Pool] HEROIC v BB Team — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] HEROIC v BB Team — FAILED [125/126]
+[10:10:34] [Pool] Rooster v Ground Zero — failed: Browser.new_page: Target page, context or browser has been closed
+[10:10:34] [Pool] Rooster v Ground Zero — FAILED [126/126]
+[10:10:34] [Pool] 12/126 workers active
+[10:10:34] Live: 12 events with full markets, 490 total markets
+[10:10:34] WebSocket server on port 8080 (token=none)
+[10:10:34] Streaming real-time data...
